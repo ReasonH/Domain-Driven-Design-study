@@ -11,3 +11,5 @@
 ### 목차
 
 Chapter01. [Value Object와 Reference Object](studyhistory/Chaptor01.md)
+
+Chapter02. [Aggregate와 Repository](studyhistory/Chaptor02.md)
