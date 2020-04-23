@@ -1,4 +1,4 @@
-package aggregate;
+package domain;
 
 public class CustomerRepository {
     public void save(Customer customer) {

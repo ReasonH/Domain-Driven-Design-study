@@ -1,4 +1,4 @@
-package aggregate;
+package domain;
 import java.math.BigDecimal;
 
 public class Money {

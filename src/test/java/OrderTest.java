@@ -1,4 +1,4 @@
-import aggregate.*;
+import domain.*;
 import junit.framework.TestCase;
 import org.junit.Before;
 
@@ -56,6 +56,16 @@ public class OrderTest extends TestCase {
         orderRepository.save(order);
 
         assertEquals(2,order.getOrderLineItemSize());
+    }
+
+    public void testOrderIdentical() throws Exception {
+        Order order = customer.newOrder("CUST-01-ORDER-01")
+                .with("상품1", 10)
+                .with("상품2", 20);
+        orderRepository.save(order);
+
+        Order anotherOrder = orderRepository.find("CUST-01-ORDER-01");
+        assertEquals(order, anotherOrder);
     }
 }
 

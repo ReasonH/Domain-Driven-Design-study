@@ -1,4 +1,4 @@
-package aggregate;
+package domain;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -27,5 +27,9 @@ public class OrderRepository {
     @SuppressWarnings("unchecked")
     public Set<Order> findAll() {
         return new HashSet<Order>((Collection<Order>)Registrar.getAll(Order.class));
+    }
+
+    public Order delete(String identity) {
+        return (Order)Registrar.delete(Order.class, identity);
     }
 }

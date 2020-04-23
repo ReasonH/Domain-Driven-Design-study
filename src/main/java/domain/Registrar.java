@@ -1,4 +1,4 @@
-package aggregate;
+package domain;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -49,5 +49,16 @@ public class Registrar {
                 Collections.unmodifiableCollection(foundEntryPoints != null ?
                         entryPoints.get(entryPointClass).values() :
                         Collections.EMPTY_SET);
+    }
+
+    public static EntryPoint delete(Class<?> entryPointClass, String objectName) {
+        return soleInstance.deleteObj(entryPointClass, objectName);
+    }
+
+    @SuppressWarnings("unused")
+    private EntryPoint deleteObj(Class<?> entryPointClass, String objectName) {
+        Map<String,EntryPoint> theEntryPoint =
+                entryPoints.get(entryPointClass);
+        return theEntryPoint.remove(objectName);
     }
 }

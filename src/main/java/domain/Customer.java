@@ -1,4 +1,4 @@
-package aggregate;
+package domain;
 
 public class Customer extends EntryPoint {
     private String customerNumber;

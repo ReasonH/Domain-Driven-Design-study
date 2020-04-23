@@ -1,4 +1,4 @@
-package aggregate;
+package domain;
 
 public class EntryPoint {
     private final String identity;

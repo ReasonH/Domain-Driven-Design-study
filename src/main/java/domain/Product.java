@@ -1,4 +1,4 @@
-package aggregate;
+package domain;
 
 public class Product extends EntryPoint {
    private Money price;

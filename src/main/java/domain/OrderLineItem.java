@@ -1,12 +1,13 @@
-package aggregate;
-
-import java.math.BigDecimal;
+package domain;
 
 public class OrderLineItem {
     private Product product;
     private int quantity;
 
-    private ProductRepository productRepository = new ProductRepository();
+    private ProductRepository productRepository = new CollectionProductRepository();
+
+    public OrderLineItem() {
+    }
 
     public OrderLineItem(String productName, int quantity) {
         this.product = productRepository.find(productName);

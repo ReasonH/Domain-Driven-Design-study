@@ -1,4 +1,4 @@
-import aggregate.*;
+import domain.*;
 import junit.framework.TestCase;
 
 public class OrderRepositoryTest extends TestCase {
@@ -16,7 +16,7 @@ public class OrderRepositoryTest extends TestCase {
         customer = new Customer("CUST-01", "홍길동", "경기도 안양시", 200000);
     }
 
-    public void testOrdreCount() throws Exception {
+    public void testOrderCount() throws Exception {
         orderRepository.save(customer.newOrder("CUST-01-ORDER-01")
                 .with("상품1", 5)
                 .with("상품2", 20)
@@ -27,5 +27,17 @@ public class OrderRepositoryTest extends TestCase {
                 .with("상품2", 5));
 
         assertEquals(2, orderRepository.findByCustomer(customer).size());
+    }
+
+    public void testDeleteOrder() throws Exception {
+        orderRepository.save(customer.newOrder("CUST-01-ORDER-01")
+                .with("상품1", 5)
+                .with("상품2", 20));
+        Order order = orderRepository.find("CUST-01-ORDER-01");
+
+        orderRepository.delete("CUST-01-ORDER-01");
+
+        assertNull(orderRepository.find("CUST-01-ORDER-01"));
+        assertNotNull(order);
     }
 }

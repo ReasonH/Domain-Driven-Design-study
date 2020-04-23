@@ -1,4 +1,4 @@
-package aggregate;
+package domain;
 
 import java.util.HashSet;
 import java.util.Set;

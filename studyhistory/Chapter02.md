@@ -232,7 +232,7 @@ newOrder() 메소드는 EP 검색에 사용될 주문 ID를 인자로 새로운 
 
 ##### `Order.java`
 ~~~ java
-package aggregate;
+package domain;
 
 public class Order extends EntryPoint {
     private Set<OrderLineItem> lineItems = new HashSet<OrderLineItem>();
@@ -303,7 +303,7 @@ OrderLineItem은 Product 클래스와 연관 관계를 가지며, 상품의 수�
 
 ##### `Product.java`
 ~~~ java
-package aggregate;
+package domain;
 
 public class Product extends EntryPoint {
    private Money price;
