@@ -158,11 +158,11 @@ Method Chaining 스타일을 도메인 객체 인터페이스의 설계에 적�
 #### 테스트 작성
 다음은 주문 처리를 테스트 하기 위한 클래스 및 setup이다.
 
-##### `OrderTest.java`
+##### `reason.OrderTest.java`
 ~~~ java
 import org.junit.Before;
 
-public class OrderTest extends TestCase {
+public class reason.OrderTest extends TestCase {
     private Customer customer;
     private OrderRepository orderRepository;
     private ProductRepository productRepository;
@@ -183,7 +183,7 @@ public class OrderTest extends TestCase {
 테스트 코드를 작성하며 도메인 객체에게는 의미가 명확한 오퍼레이션을 할당하도록 노력한다. 오퍼레이션은 구현 전력, 알고리즘과 독립적으로 오퍼레이션을 호출할 사용자의 사용 의도에 적합한 이름을 가져야 한다. 즉, 오퍼레이션 내부 구현이나 컴퓨터의 관점이 아닌 클라이언트 관점을 반영해야 한다. INTENTION-REVEALING NAME 패턴을 따른 메소드의 경우 가독성이 높아진다.
 
 우선 두 가지 상품을 주문한 후 주문의 총액을 계산하는 테스트 코드를 작성하자. 주문 AGGREGATE는 FLUENT INTERFACE 스타일을 사용하여 생성한다.
-##### `OrderTest.java`
+##### `reason.OrderTest.java`
 ~~~ java
     public void testOrderPrice() throws Exception {
         Order order = customer.newOrder("CUST-01-ORDER-01")
@@ -232,7 +232,7 @@ newOrder() 메소드는 EP 검색에 사용될 주문 ID를 인자로 새로운 
 
 ##### `Order.java`
 ~~~ java
-package domain;
+package reason.domain;
 
 public class Order extends EntryPoint {
     private Set<OrderLineItem> lineItems = new HashSet<OrderLineItem>();
@@ -303,7 +303,7 @@ OrderLineItem은 Product 클래스와 연관 관계를 가지며, 상품의 수�
 
 ##### `Product.java`
 ~~~ java
-package domain;
+package reason.domain;
 
 public class Product extends EntryPoint {
    private Money price;
@@ -345,7 +345,7 @@ public Money getPrice() {
 
 Order에 전체 주문 가격을 구할 수 있는 메소드를 추가할 수 있다. Order.getPrice()메소드는 주문 항목들의 전체 가격을 더한 금액을 반환한다.
 
-##### `OrderTest.java`
+##### `reason.OrderTest.java`
 ~~~ java
 public void testOrderLimitExceed() {
         try {
@@ -360,7 +360,7 @@ public void testOrderLimitExceed() {
 ~~~
 고객의 주문 한도액을 초과하는 경우 with() 메소드는 OrderLimitExceededException 을 던진다.
 
-##### `OrderTest.java`
+##### `reason.OrderTest.java`
 ~~~ java
     public void testOrderWithEqualProductsPrice() throws Exception{
         Order order = customer.newOrder("CUST-01-ORDER-01")
@@ -373,7 +373,7 @@ public void testOrderLimitExceed() {
 ~~~
 위는 고객이 상품1을 두 번의 주문 항목으로 나누어 구매할 경우 주문 가격이 정확한지 검증하는 테스트이다. 이 테스트는 통과한다. 즉, 동일 상품을 여러 개의 주문 항목으로 나누어도 주문 총액이 정확하게 계산된다.
 
-##### `OrderTest.java`
+##### `reason.OrderTest.java`
 ~~~ java
     public void testOrderLineItems() throws Exception {
         Order order = customer.newOrder("CUST-01-ORDER-01")
@@ -439,9 +439,9 @@ isProductEqual을 통해 등록된 주문 항목 내에 동일 상품에 대한 
 고객에 대한 **주문 목록**을 얻기 위한 적절한 방법은 OrderRepository에 고객 별 **주문 목록**을 조회하는 메소드를 추가하는 것이다. 주문 객체를 얻기 위해 OrderRepository를 사용하는 것은 논리적으로 타당할 뿐 아니라 주문 객체에 접근하기 위한 일관성 있는 방법을 제공한다. 또한, 양방향 연관 관계도 방지할 수 있다.
 
 다음은 OrderRepository에 기능을 추가하기 전 테스트를 작성한다.
-##### `OrderRepositoryTest.java`
+##### `reason.OrderRepositoryTest.java`
 ~~~ java
-public class OrderRepositoryTest extends TestCase {
+public class reason.OrderRepositoryTest extends TestCase {
     private Customer customer;
     private OrderRepository orderRepository;
     private ProductRepository productRepository;

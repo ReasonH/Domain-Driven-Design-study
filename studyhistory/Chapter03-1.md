@@ -32,7 +32,7 @@ public Order with(String productName, int quantity) throws OrderLimitExceededExc
 
 Order와 OrderLineItem은 Customer의 newOrder() 메소드를 통해 생성된다. newOrder() 메소드는 Order의 CREATION METHOD인 order()를 호출하며 이 메소드는 내부적으로 생성자를 호출하여 Order 클래스를 생성한 후 반환한다. OrderLineItem은 Order의 with()메소드를 사용하여 생성되며, with() 메소드 역시 OrderLineItem의 생성자를 호출하여 인스턴스를 생성한다.
 
-##### `OrderTest.java`
+##### `reason.OrderTest.java`
 ~~~ java
 public void testOrderIdentical() throws Exception {
     Order order = customer.newOrder("CUST-01-ORDER-01")
@@ -49,7 +49,7 @@ Order와 OrderLineItem의 생성자가 호출되는 순간 사용자가 입력�
 
 이 테스트를 통해 REPOSITORY를 통해 등록된 주문 객체들은 추적성과 유일성이라는 Ref Obj 특성을 만족한다는 것을 알 수 있다.
 
-##### `OrderRepositoryTest.java`
+##### `reason.OrderRepositoryTest.java`
 ~~~ java
 public void testDeleteOrder() throws Exception {
     orderRepository.save(customer.newOrder("CUST-01-ORDER-01")

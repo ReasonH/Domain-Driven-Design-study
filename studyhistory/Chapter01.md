@@ -347,7 +347,7 @@ public class Customer extends EntryPoint {
 
 다음은 Customer 클래스 자체에 EP의 컬렉션 관리 인터페이스를 추가하는 방식이다. 우선 Customer 클래스의 검색을 위한 TC를 작성하자
 
-##### `CustomerTest.java`
+##### `reason.CustomerTest.java`
 ~~~ java
 public void setUp() {
   Registrar.init();
@@ -429,7 +429,7 @@ public class Customer extends EntryPoint {
 
 이는 Customer 클래스와는 분리된 별도 클래스에 Customer 클래스의 컬렉션 관리 인터페이스를 할당하는 방법이다. 우선 테스트 케이스를 작성한다.
 
-##### `CustomerTest.java`
+##### `reason.CustomerTest.java`
 ~~~ java
 public void setUp() {
   Registrar.init();

@@ -18,3 +18,5 @@ Chapter01. [Value Object와 Reference Object](studyhistory/Chapter01.md)
 Chapter02. [Aggregate와 Repository](studyhistory/Chapter02.md)  
 
 Chapter03-1. [영속성 관리](studyhistory/Chapter03-1.md)
+
+Chapter03-2. [Dependency injection과 AOP](studyhistory/Chapter03-2.md)
