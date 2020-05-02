@@ -1,4 +1,5 @@
 ## Aggregate와 Repository
+[전체 목차로](../README.md)
 
 ### 목차 <a id="0"></a>
 1. [비즈니스 책임과 동시성](#1)
@@ -89,7 +90,7 @@
 주문 항목은 각 주문의 일부이며 하나의 주문에 의해서만 참조되기 때문에 주문과 함께 잠기더라도 시스템 성능에 영향을 미치지 않는다. 그러나 상품은 하나 이상의 주문에 의해 참조된다. 따라서 주문을 잠글 때마다 연결된 모든 상품을 잠근다면 해당 상품에 접근하려는 모든 주문 객체가 동시에 대기 상태로 빠지게 된다.
 - 주문, 주문 항목과 달리 상품은 높은 빈도의 경쟁이 발생하는 객체이다.
 
-주문과 주문 항목이 변경되는 빈도에 비해 상품의 변경 빈도는 상대적으로 매우 낮다. 즉, 주문과 주문 항목이 빈번하게 생성, 수정, 삭제되는데 비해 상품의 명칭, 가격의 수정 및 신규 상품 추가-삭제는 빈번하게 발생하지 않는다. 주문과 주문 항목의 수정이 거의 비슷한 시점에 발생하는데 비해 상품의 수정 시점은 주문, 주문 항목의 수정 시점과 무관하다.
+주문과 주문 항목이 변경되는 빈도는 상품의 변경 빈도에 비해 상대적으로 매우 낮다. 즉, 주문과 주문 항목이 빈번하게 생성, 수정, 삭제되는데 비해 상품의 명칭, 가격의 수정 및 신규 상품 추가-삭제는 빈번하게 발생하지 않는다. 주문과 주문 항목의 수정이 거의 비슷한 시점에 발생하는데 비해 상품의 수정 시점은 주문, 주문 항목의 수정 시점과 무관하다.
 
 따라서, 주문과 주문 항목은 하나의 객체 클러스터를 구성하며 고객, 상품은 주문 클러스터에 존재하지 않는 독립 객체로 존재한다.
 
@@ -97,6 +98,7 @@
 
 ![](http://pds11.egloos.com/pds/200811/20/18/f0081118_492500615afbc.jpg)
 
+---
 ### AGGREGATE <a id="2"></a>
 [목차로](#0)
 #### 루트 (Entry point)
@@ -121,7 +123,7 @@ Eric Evans가 정의하는 AGGREGATE 패턴의 규칙은 다음과 같다.
 5. EP는 VO에 대한 복사본을 다른 객체에게 전달할 수 있으며 VO에 발생하는 일은 신경쓰지 않는다.
 6. EP만이 Repository로부터 직접 얻어질 수 있다. 다른 객체들은 EP로부터의 연관 관계 항해를 통해서만 접근 가능하다.
 7. AGGREGATE 내부의 객체들은 다른 AGGREGATE의 EP를 참조할 수 있다.
-8. 삭제 오퍼레이션은 AGGREGATE 내 모든 객체를 제거해야한다. (GC가 있을 경우 EP 삭제 시 수반되는 모든 객체가 삭제돔)
+8. 삭제 오퍼레이션은 AGGREGATE 내 모든 객체를 제거해야한다. (GC가 있을 경우 EP 삭제 시 수반되는 모든 객체가 삭제됨)
 9. AGGREGATE 내부의 어떤 객체에 대한 변경이 확약되면 전체 AGGREGATE에 대한 모든 불변식이 만족되어야 한다.
 
 여기에서 눈 여겨 봐야할 부분은 여섯 번째 규칙이다. 이 규칙은 주문 도메인 예에서 살펴본 AGGREGATE 식별 규칙에 다음 한 가지 규칙을 추가한다.
@@ -142,6 +144,7 @@ AGGREGATE, EP, REPOSITORY는 유요한 분석기법임과 동시에 도메인 �
 
 이는 AGGREGATE와 EP를 결정한 후 REPOSITORY를 추가한 주문 도메인이다. 주문에 대한 불변식이 AGGREGATE에 추가되었다.
 
+---
 ### Fluent Interface <a id="3"></a>
 [목차로](#0)
 
@@ -180,7 +183,7 @@ public class reason.OrderTest extends TestCase {
 }
 ~~~
 
-테스트 코드를 작성하며 도메인 객체에게는 의미가 명확한 오퍼레이션을 할당하도록 노력한다. 오퍼레이션은 구현 전력, 알고리즘과 독립적으로 오퍼레이션을 호출할 사용자의 사용 의도에 적합한 이름을 가져야 한다. 즉, 오퍼레이션 내부 구현이나 컴퓨터의 관점이 아닌 클라이언트 관점을 반영해야 한다. INTENTION-REVEALING NAME 패턴을 따른 메소드의 경우 가독성이 높아진다.
+테스트 코드를 작성하며 도메인 객체에게는 의미가 명확한 오퍼레이션을 할당하도록 노력한다. 오퍼레이션은 구현 전략, 알고리즘과 독립적으로 오퍼레이션을 호출할 사용자의 사용 의도에 적합한 이름을 가져야 한다. 즉, 오퍼레이션 내부 구현이나 컴퓨터의 관점이 아닌 클라이언트 관점을 반영해야 한다. INTENTION-REVEALING NAME 패턴을 따른 메소드의 경우 가독성이 높아진다.
 
 우선 두 가지 상품을 주문한 후 주문의 총액을 계산하는 테스트 코드를 작성하자. 주문 AGGREGATE는 FLUENT INTERFACE 스타일을 사용하여 생성한다.
 ##### `reason.OrderTest.java`
@@ -385,7 +388,7 @@ public void testOrderLimitExceed() {
         assertEquals(2,order.getOrderLineItemSize());
     }
 ~~~
-위는 고객이 동일 상품에 대해 별도의 주문을 수행했을 때이다. 고객은 동일한 상품을 나누어 요청하더라도 업무 상 이들을 취합하여 동일한 주문 항목으로 처리한다
+위는 고객이 동일 상품에 대해 별도의 주문을 수행했을 때이다. 고객은 동일한 상품을 나누어 요청하더라도 시스템은 이들을 취합하여 동일한 주문 항목으로 처리해야 한다.
 
 ##### `Order.java`
 ~~~ java
@@ -400,11 +403,11 @@ public void testOrderLimitExceed() {
 ##### `Order.java`
 ~~~ java
 private Order with(OrderLineItem lineItem) throws OrderLimitExceededException {
-    if (isExceedLimit(customer, lineItem)) {
+    if (isExceedLimit(customer, lineItem)) { // lineItem
         throw new OrderLimitExceededException();
     }
 
-    for(OrderLineItem item : lineItems) {
+    for(OrderLineItem item : lineItems) { // lineItems
         if (item.isProductEqual(lineItem)) {
             item.merge(lineItem);
             return this;
@@ -430,6 +433,7 @@ private Order with(OrderLineItem lineItem) throws OrderLimitExceededException {
 
 isProductEqual을 통해 등록된 주문 항목 내에 동일 상품에 대한 주문 정보가 있는지 체크한다. 존재할 경우 하나의 주문 항목으로 병합하도록 OrderLineItem 메소드를 호출한다. 
 
+---
 ### Entry Point와 Repository <a id="4"></a>
 [목차로](#0)
 
@@ -503,3 +507,12 @@ Customer 클래스가 Ref Obj이고 CustomerRepository에 의해 유일성과 �
 
 #### 결론
 테스트를 실행하면 성공이다. 주문도 정상적으로 처리되고 불변식도 위반하지 않고 중복되는 주문 항목도 없고 고객의 주문 목록도 조회할 수 있게 된것이다.
+
+---
+출처: 이터너티님의 블로그
+
+[Domain-Driven Design의 적용-2.AGGREGATE와 REPOSITORY 1부](http://aeternum.egloos.com/1144679)  
+[Domain-Driven Design의 적용-2.AGGREGATE와 REPOSITORY 2부](http://aeternum.egloos.com/1165089)  
+[Domain-Driven Design의 적용-2.AGGREGATE와 REPOSITORY 3부](http://aeternum.egloos.com/1173825)  
+[Domain-Driven Design의 적용-2.AGGREGATE와 REPOSITORY 4부](http://aeternum.egloos.com/1189025)  
+[Domain-Driven Design의 적용-2.AGGREGATE와 REPOSITORY 5부](http://aeternum.egloos.com/1201820)  

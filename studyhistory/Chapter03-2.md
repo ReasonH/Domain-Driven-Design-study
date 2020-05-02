@@ -1,4 +1,5 @@
 ## Dependency injection과 AOP
+[전체 목차로](../README.md)
 
 ### 목차 <a id="0"></a>
 1. 사용과 구성의 분리
@@ -6,6 +7,7 @@
 
 ### 사용과 구성의 분리
 ![](http://pds12.egloos.com/pds/200812/24/18/f0081118_4951ab22a44fd.jpg)
+
 **OrderLineItem이 직접 ProductRepositoryImpl를 생성하기에 OrderLineItem이 여전히 구체적인 클래스에 의존한다.**
 
 OrderLineItem이 직접 ProductRepositoryImpl를 생성하기에 여전히 둘 간에 강한 결합 관계가 존재한다. 만약 ProductRepositoryImpl를 DB에 접근하도록 수정하면 이전 설계에서의 OCP 위반, 단위 테스트의 번거로움, DB에 대한 종속성과 같은 문제점이 그대로 유지된다.
@@ -13,6 +15,7 @@ OrderLineItem이 직접 ProductRepositoryImpl를 생성하기에 여전히 둘 �
 문제의 원인은 객체 구성과 사용이 OrderLineItem 한 곳에 공존하고 있다는 것이다. 현재 설계에서는 OrderLineItem이 직접 ProductRepositoryImpl와의 관계를 설정한다. 객체 구성과 사용이 한 곳에 모여 있을 경우 객체 간 결합도가 높아진다. 해결 방법은 외부 객체가 OrderLineItem과 ProductRepositoryImpl 간 관계를 설정하도록 함으로써 구성을 사용으로부터 분리시키는 것이다.
 
 ![](http://pds1.egloos.com/pds/200812/24/18/f0081118_4951ab3a22816.jpg)
+
 **구성과 사용을 분리시킴으로 직접적 결합을 제거했다.**
 
 이처럼 협력 객체들의 외부에 존재하는 제3의 객체가 협력 객체 간의 의존성을 연결하는 것을 의존성 주입이라 한다. 이를 위한 다양한 프레임워크가 있는데, 이는 의존성 주입을 위한 객체 생명주기를 관리하는 컨테이너 역할을 수행하기에 경량 컨테이너라고도 한다. 여기서는 Spring Framework를 사용하도록 한다.
@@ -40,7 +43,7 @@ public class OrderLineItem {
 ~~~
 우선 OrderLineItem에서 Repository 생성 부분을 제거하며 DI를 위한 setter를 추가한다. (*setter injection*) setter의 인자 타입 또한 ProductRepository 인터페이스라는 것에 주의하자.
 
-Spring과 같은 경량 컨테이너를 사용하여 얻을 수 있는 장점은 불필요한 SINGLETON을 줄일 수 있다는 점이다. Spring은 컨테이너에서 관리할 객체를 등록할 때 객체의 인스턴스를 하나만 유지할 지 필요 시 매번 새로운 인스턴스를 생성할 지 정의할 수 있다. 따라서 오버라이딩이 불가능하고 결합도가 높은 static 메소드를 사용하지 않고도 객체를 singleton으로 유지할 수 있다. 따라서 spring을 사용하면 singleton으로 구현된 Registrar을 인터페이스와 구체적인 클래스로 분리함으로싸 낮은 결합도와 높은 유연성을 제공할 수 있다. EXTRACT INTERFACE 리팩토링을 진행한다.
+Spring과 같은 경량 컨테이너를 사용하여 얻을 수 있는 장점은 불필요한 SINGLETON을 줄일 수 있다는 점이다. Spring은 컨테이너에서 관리할 객체를 등록할 때 객체의 인스턴스를 하나만 유지할 지 필요 시 매번 새로운 인스턴스를 생성할 지 정의할 수 있다. 따라서 오버라이딩이 불가능하고 결합도가 높은 static 메소드를 사용하지 않고도 객체를 singleton으로 유지할 수 있다. 따라서 spring을 사용하면 singleton으로 구현된 Registrar을 인터페이스와 구체적인 클래스로 분리함으로써 낮은 결합도와 높은 유연성을 제공할 수 있다. EXTRACT INTERFACE 리팩토링을 진행한다.
 
 ##### `Registrar.java`
 ~~~java
@@ -159,8 +162,10 @@ public class OrderLineItem {
 ~~~
 
 ![](http://pds12.egloos.com/pds/200812/24/18/f0081118_4951b0f771e24.jpg)
+
 - 최종적인 약한 결합도 형태
 
+---
 ### 관점의 변경 <a id="2"></a>
 [목차로](#0)
 
@@ -235,3 +240,10 @@ public class OrderLineItem {
  1. 도메인 클래스들은 REPOSITORY의 인터페이스에만 의존할 뿐 실제적인 구현 클래스에 의존하지 않게 되었다.
  2. 메모리 컬렉션을 처리하는 REPOSITORY 내부 구현을 DB에 접근하는 REPOSITORY로 대체하더라도 다른 클래스에 영향을 미치지 않을 것이다.
  3. 도메인 클래스가 REPOSITORY 인터페이스에만 의존하기에 Mock 객체를 사용하여 DB없이도 테스트가 가능해졌다.
+
+ ---
+출처: 이터너티님의 블로그
+
+[Domain-Driven Design의 적용-3.Dependency Injection과 Aspect-Oriented Programming 5부](http://aeternum.egloos.com/1265684)  
+[Domain-Driven Design의 적용-3.Dependency Injection과 Aspect-Oriented Programming 6부](http://aeternum.egloos.com/1284544)  
+[Domain-Driven Design의 적용-3.Dependency Injection과 Aspect-Oriented Programming 7부](http://aeternum.egloos.com/1316318)  

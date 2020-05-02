@@ -1,4 +1,5 @@
 ## 영속성 관리
+[전체 목차로](../README.md)
 
 ### 목차 <a id="0"></a>
 1. [도메인 객체의 생명주기](#1)
@@ -10,7 +11,8 @@
 어플리케이션은 상태를 끊임없이 기록하고 이를 재구성할 수 있어야 한다. 그러나 이를 매번 동시에 복구하는 것은 소모적이다. 시스템의 메모리는 한정된 자원이기에 어플리케이션은 지금 작업을 처리하기 위해 필요한 최소한의 정보만 가지고 있도록 한다. 어플리케이션을 망각의 늪에서 구하기 위해선 **영속성**이 필요하다.
 
 ### 도메인 객체의 생명주기 <a id="1"></a>
-[목차로](#0) 
+[목차로](#0)  
+
 Chapter02 에서는 EP에 대한 저장, 조회 등의 컬렉션 연산을 위해 REPOSITORY를 사용했다. 여기서는 주문 도메인을 분석한 후 Customer, Product, Order를 EP로 식별하고 각 EP의 생명 주기를 관리하기 위해 각각의 Repository를 도메인 모델에 추가했다.
 ![](http://thumbnail.egloos.net/600x0/http://pds13.egloos.com/pds/200812/05/18/f0081118_493881ce6feab.jpg)
 
@@ -95,8 +97,10 @@ public Order delete(String identity) {
 ~~~
 Registrar을 사용하여 OrderRepository에 주문 삭제 메소드를 추가한다. 이제 삭제 테스트 또한 통과한다. REPOSITORY는 객체 생명 주기 관리를 위한 모든 기능을 제공하며 시스템은 Ref Obj를 정상적으로 추적한다.
 
-### 객체 그리고 영속성(Persistence) <a id="1"></a>
+---
+### 객체 그리고 영속성(Persistence) <a id="2"></a>
 [목차로](#0)
+
 모든 객체는 생성자가 호출되는 시점에 생성된다. 짧은 VO의 수명에 비해 Ref Obj는 상대적으로 긴 수명으로 다양한 이벤트에 반응하며 상태가 변한다. 고객 객체의 경우 한 번 생성되면 시스템은 고객이 탈퇴할 때까지 지속적으로 참조하고 추적할 수 있어야 한다. 이를 위해 도메인 모델에 추가되는 PURE FABRICATION이 REPOSITORY이다.
 
 #### 메모리
@@ -130,6 +134,7 @@ ORM은 내부적으로 DATA MAPPER 패턴을 사용한다. DATA MAPPER는 객체
 
 지금까지는 어플리케이션의 생명 주기 동안 지속적으로 추적해야 하는 객체들을 REFERENCE OBJECT로 모델링하고 연관된 REFERENCE OBJECT들을 AGGREGATE라고 하는 하나의 객체 클러스터로 식별했다. 각 AGGREGATE에 대해 ENTRY POINT를 선정하고 ENTRY POINT 별로 REPOSITORY를 할당한 후 REPOSITORY를 통해 AGGREGATE의 생명 주기를 관리하도록 했다. 이제까지는 단순히 REPOSITORY를 REFERENCE OBJECT의 메모리 컬렉션을 관리하는 객체로만 바라 보았다. 이제 REFERENCE OBJECT의 영속성을 관리하는 객체로 REPOSITORY의 개념을 확장한다.
 
+---
 ### 영속성과 REPOSITORY <a id="3"></a>
 [목차로](#0)
 
@@ -192,6 +197,7 @@ Ref Obj들을 메모리가 아닌 RDB내에 관리하기로 정책을 수정했�
 1. ProductRepository를 인터페이스와 구현 클래스로 분리한다.
 2. OrderLineItem과 ProductRepository의 구현 클래스가 ProductRepository 인터페이스에 의존하도록 한다.
 
+---
 ### ProductRepository Refactoring <a id="4"></a>
 [목차로](#0)
 
@@ -205,9 +211,9 @@ public interface ProductRepository {
 }
 ~~~
 
-##### `CollectionProductRepository.java`
+##### `ProductRepositoryImpl.java`
 ~~~ java
-public class CollectionProductRepository implements ProductRepository{
+public class ProductRepositoryImpl implements ProductRepository{
     public void save(Product product) {
         Registrar.add(Product.class, product);
     }
@@ -217,11 +223,11 @@ public class CollectionProductRepository implements ProductRepository{
     }
 }
 ~~~
-EXTRACT INTERFACE 리팩토링을 통해 구체적인 클래스인 CollectionProductRepository가 인터페이스인 ProductRepository에 의존하도록 수정했다.
+EXTRACT INTERFACE 리팩토링을 통해 구체적인 클래스인 ProductRepositoryImpl가 인터페이스인 ProductRepository에 의존하도록 수정했다.
 
 ##### `OrderLineItem.java`
 ~~~java
-private ProductRepository productRepository = new CollectionProductRepository();
+private ProductRepository productRepository = new ProductRepositoryImpl();
 
 public OrderLineItem() {
 }
@@ -232,4 +238,12 @@ public OrderLineItem(String productName, int quantity) {
 }
 ~~~
 
-OrderLineItem의 productRepository 속성의 타입을 ProductRepository 인터페이스로 변경함으로써 OrderLineItem이 인터페이스에 의존하도록 수정했다. OrderLineItem의 생성자 내부에서는 ProductRepository 인터페이스 타입의 productRepository만을 사용하기 때문에 인터페이스에만 의존하고 구체적인 클래스에는 의존하고 있지 않다. 그러나 여전히 OrderLineItem 자체는 구체적인 클래스인 CollectionProductRepository와 강하게 결합되어 있다. 원인이 무엇일까?
+OrderLineItem의 productRepository 속성의 타입을 ProductRepository 인터페이스로 변경함으로써 OrderLineItem이 인터페이스에 의존하도록 수정했다. OrderLineItem의 생성자 내부에서는 ProductRepository 인터페이스 타입의 productRepository만을 사용하기 때문에 인터페이스에만 의존하고 구체적인 클래스에는 의존하고 있지 않다. 그러나 여전히 OrderLineItem 자체는 구체적인 클래스인 ProductRepositoryImpl와 강하게 결합되어 있다. 원인이 무엇일까?
+
+---
+출처: 이터너티님의 블로그
+
+[Domain-Driven Design의 적용-3.Dependency Injection과 Aspect-Oriented Programming 1부](http://aeternum.egloos.com/1218235)  
+[Domain-Driven Design의 적용-3.Dependency Injection과 Aspect-Oriented Programming 2부](http://aeternum.egloos.com/1228366)  
+[Domain-Driven Design의 적용-3.Dependency Injection과 Aspect-Oriented Programming 3부](http://aeternum.egloos.com/1239549)  
+[Domain-Driven Design의 적용-3.Dependency Injection과 Aspect-Oriented Programming 4부](http://aeternum.egloos.com/1249542)  

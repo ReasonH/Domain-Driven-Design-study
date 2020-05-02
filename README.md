@@ -20,3 +20,5 @@ Chapter02. [Aggregate와 Repository](studyhistory/Chapter02.md)
 Chapter03-1. [영속성 관리](studyhistory/Chapter03-1.md)
 
 Chapter03-2. [Dependency injection과 AOP](studyhistory/Chapter03-2.md)
+
+Chapter04-1. [ORM과 투명한 영속성 - Entity 생명주기와 식별자](studyhistory/Chapter04-1.md)
