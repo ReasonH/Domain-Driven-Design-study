@@ -1,4 +1,4 @@
-## ORM과 투명한 영속성 - ORM과 영속성
+## ORM과 투명한 영속성 - Hibernate ORM
 [전체 목차로](../README.md)
 
 ### 목차 <a id="0"></a>
@@ -101,7 +101,7 @@ public class Order {
     ...
 ~~~
 
-EntryPoint로부터의 상속 관계가 제거되었으며 id를 반환하기 위한 getter 메소드가 추가되었다. id를 반환하는 getter 메소드를 추가한 이유는 대부분의 엔터프라이즈 어플리케이션이 프레젠테이션 레이어에서 해당 도메인 객체의 id를 필요로 하기 때문이다.
+EntryPoint로부터의 상속 관계가 제거되었으며 id를 반환하기 위한 getter 메소드가 추가되었다. (Lombok Getter로 대체) id를 반환하는 getter 메소드를 추가한 이유는 대부분의 엔터프라이즈 어플리케이션이 프레젠테이션 레이어에서 해당 도메인 객체의 id를 필요로 하기 때문이다.
 
 다음으로 equals()와 hashCode()를 구현한다. equals()와 hashCode()는 대리 키 대신 자연 키를 비교해야 한다. Order를 유일하게 식별하면서도 잘 변하지 않는 값은 orderId라는 것을 알 수 있다.
 
