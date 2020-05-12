@@ -11,11 +11,12 @@ import reason.domain.order.OrderRepository;
 import reason.domain.product.Product;
 import reason.domain.product.ProductRepository;
 
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestComponent
 public class OrderRepositoryTest {
-    @Autowired
     private Customer customer;
 
     @Autowired
@@ -24,11 +25,8 @@ public class OrderRepositoryTest {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private Registrar registrar;
 
     public void setUp() throws Exception {
-        registrar.init();
         productRepository.save(new Product("상품1", 1000));
         productRepository.save(new Product("상품2", 5000));
 
@@ -46,18 +44,18 @@ public class OrderRepositoryTest {
                 .with("상품1", 20)
                 .with("상품2", 5));
 
-        assertEquals(2, orderRepository.findByCustomer(customer).size());
+        assertEquals(2, Objects.requireNonNull(orderRepository.findByCustomer(customer).orElse(null)).size());
     }
 
     public void testDeleteOrder() throws Exception {
         orderRepository.save(customer.newOrder("CUST-01-ORDER-01")
                 .with("상품1", 5)
                 .with("상품2", 20));
-        Order order = orderRepository.find("CUST-01-ORDER-01");
+        Order order = orderRepository.findByOrderId("CUST-01-ORDER-01").orElse(null);
 
-        orderRepository.delete("CUST-01-ORDER-01");
+        orderRepository.deleteByOrOrderId("CUST-01-ORDER-01");
 
-        assertNull(orderRepository.find("CUST-01-ORDER-01"));
+        assertNull(orderRepository.findByOrderId("CUST-01-ORDER-01"));
         assertNotNull(order);
     }
 }

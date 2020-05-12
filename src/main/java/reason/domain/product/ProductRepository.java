@@ -1,6 +1,9 @@
 package reason.domain.product;
 
-public interface ProductRepository {
-    public void save(Product product1);
-    public Product find(String productName);
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface ProductRepository extends JpaRepository<Product, Long> {
+    Optional<Product> findByName(String name);
 }

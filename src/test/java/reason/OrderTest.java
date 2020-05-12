@@ -27,12 +27,9 @@ public class OrderTest {
     private OrderRepository orderRepository;
     @Autowired
     private ProductRepository productRepository;
-    @Autowired
-    private Registrar registrar;
 
     @BeforeEach
     public void setUp() throws Exception {
-        registrar.init();
         productRepository.save(new Product("상품1", 1000));
         productRepository.save(new Product("상품2", 5000));
 
@@ -88,7 +85,7 @@ public class OrderTest {
                 .with("상품2", 20);
         orderRepository.save(order);
 
-        Order anotherOrder = orderRepository.find("CUST-01-ORDER-01");
+        Order anotherOrder = orderRepository.findByOrderId("CUST-01-ORDER-01").orElse(null);
         assertEquals(order, anotherOrder);
     }
 }

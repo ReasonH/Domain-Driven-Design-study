@@ -1,27 +1,31 @@
 package reason.domain.product;
 
-import reason.domain.EntryPoint;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import reason.domain.Money;
 
-public class Product extends EntryPoint {
-   private Money price;
-   private String name;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-   public Product(String name, long price) {
-       super(name);
-       this.price = new Money(price);
-   }
+@NoArgsConstructor
+@Getter
+@Entity
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private Money price;
+    private String name;
 
-   public Product(String name, Money price) {
-        super(name);
+    public Product(String name, long price) {
+        this.name = name;
+        this.price = new Money(price);
+    }
+
+    public Product(String name, Money price) {
+        this.name = name;
         this.price = price;
-   }
-
-   public Money getPrice() {
-        return price;
-   }
-
-   public String getName() {
-        return name;
-   }
+    }
 }

@@ -1,8 +1,13 @@
 package reason.domain;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Embeddable;
 import java.math.BigDecimal;
 
+@NoArgsConstructor
+@Embeddable
 public class Money {
-    private final BigDecimal amount;
+    private BigDecimal amount;
 
     public Money(BigDecimal amount) {
         this.amount = amount;

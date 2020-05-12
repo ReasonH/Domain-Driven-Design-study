@@ -1,6 +1,9 @@
 package reason.domain.customer;
 
-public interface CustomerRepository {
-    public void save(Customer customer);
-    public Customer find(String identity);
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface CustomerRepository extends JpaRepository<Customer, Long> {
+    Optional<Customer> findByName(String name);
 }

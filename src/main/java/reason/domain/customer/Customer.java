@@ -1,10 +1,22 @@
 package reason.domain.customer;
 
-import reason.domain.EntryPoint;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import reason.domain.Money;
 import reason.domain.order.Order;
 
-public class Customer extends EntryPoint {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@NoArgsConstructor
+@Getter
+@Entity
+public class Customer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String customerNumber;
     private String name;
     private String address;
@@ -13,8 +25,6 @@ public class Customer extends EntryPoint {
 
     public Customer(String customerNumber, String name, String address,
                     long limitPrice) {
-
-        super(customerNumber);
         this.customerNumber = customerNumber;
         this.name = name;
         this.address = address;
