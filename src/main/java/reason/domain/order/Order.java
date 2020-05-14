@@ -14,6 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Entity
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,7 +22,7 @@ public class Order {
 
     private String orderId;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<OrderLineItem> lineItems = new HashSet<OrderLineItem>();
 
     @ManyToOne
@@ -35,7 +36,6 @@ public class Order {
         this.orderId = orderId;
         this.customer = customer;
     }
-
 
     public boolean equals(Object object){
         if (object == this){

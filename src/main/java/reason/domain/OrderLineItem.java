@@ -5,19 +5,18 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.stereotype.Component;
 import reason.domain.product.Product;
 import reason.domain.product.ProductRepository;
 
 import javax.persistence.*;
 
 @NoArgsConstructor
-@Entity
 @Getter
 @Configurable(autowire = Autowire.BY_TYPE, value = "orderLineItem", preConstruction = true)
+@Entity
 public class OrderLineItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -38,9 +37,8 @@ public class OrderLineItem {
         return product == lineItem.product;
     }
 
-    public OrderLineItem merge(OrderLineItem lineItem) {
+    public void merge(OrderLineItem lineItem) {
         quantity += lineItem.quantity;
-        return this;
     }
 
     public Money getPrice() {

@@ -20,7 +20,6 @@ public class Customer {
     private String customerNumber;
     private String name;
     private String address;
-    private Money mileage;
     private Money limitPrice;
 
     public Customer(String customerNumber, String name, String address,

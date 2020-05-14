@@ -18,7 +18,8 @@ dependencies {
     implementation 'org.springframework:spring-instrument'
     runtimeOnly 'com.h2database:h2'
 
-    compileOnly "org.projectlombok:lombok:1.16.16"
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude module: 'junit'
     }

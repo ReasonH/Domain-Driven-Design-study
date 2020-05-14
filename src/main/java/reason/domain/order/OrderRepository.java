@@ -8,6 +8,6 @@ import java.util.Set;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByOrderId(String orderId);
-    Optional<Set<Order>> findByCustomer(Customer customer);
-    void deleteByOrOrderId(String orderId);
+    Optional<Set<Order>> findAllByCustomer(Customer customer);
+    void deleteByOrderId(String orderId);
 }
